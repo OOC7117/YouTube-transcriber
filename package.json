@@ -1,0 +1,14 @@
+{
+  "name": "youtube-transcriber",
+  "version": "0.1.0",
+  "description": "Simple web app to extract YouTube title and transcript highlights",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
