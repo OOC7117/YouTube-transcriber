@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Transcript Highlighter</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>YouTube Transcript Highlighter</h1>
+      <p class="tagline">Paste a YouTube link, extract the title and transcript, and get quick highlights.</p>
+    </header>
+
+    <section class="card">
+      <form id="extract-form">
+        <label for="url">YouTube link</label>
+        <div class="input-row">
+          <input id="url" name="url" type="url" placeholder="https://www.youtube.com/watch?v=example" required>
+          <button type="submit">Extract</button>
+        </div>
+        <p class="hint">No API keys required yet — we return example data until you plug in real services.</p>
+      </form>
+    </section>
+
+    <section class="card" id="results" hidden>
+      <div class="result-block">
+        <h2>Video title</h2>
+        <p id="title" class="result-text"></p>
+      </div>
+
+      <div class="result-block">
+        <h2>Short answer</h2>
+        <p id="answer" class="result-text"></p>
+      </div>
+
+      <div class="result-block">
+        <h2>Highlights</h2>
+        <div id="highlights"></div>
+      </div>
+    </section>
+
+    <section class="card" id="status"></section>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
