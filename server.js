@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { YoutubeTranscript } = require('youtube-transcript');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,6 +45,23 @@ app.post('/api/process', (req, res) => {
     answer,
     highlights: exampleHighlights
   });
+});
+
+app.post('/api/transcript', async (req, res) => {
+  const { videoId } = req.body || {};
+
+  if (!videoId) {
+    return res.status(400).json({ error: 'Please provide a YouTube video ID.' });
+  }
+
+  try {
+    const transcriptItems = await YoutubeTranscript.fetchTranscript(videoId.trim());
+    const transcriptText = transcriptItems.map((item) => item.text).join(' ');
+    return res.json({ transcript: transcriptText });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Unable to fetch transcript for that video ID.' });
+  }
 });
 
 function extractYouTubeId(url) {
