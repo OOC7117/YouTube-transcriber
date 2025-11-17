@@ -8,6 +8,22 @@ const transcriptSection = document.getElementById('transcript-section');
 const transcriptForm = document.getElementById('transcript-form');
 const transcriptResult = document.getElementById('transcript-result');
 const transcriptEl = document.getElementById('transcript');
+const demoHighlights = [
+  {
+    category: 'Key Idea',
+    items: [
+      'Placeholder transcript summaries will appear here.',
+      'Replace this with real LLM output once connected.'
+    ]
+  },
+  {
+    category: 'Action Items',
+    items: [
+      'Add transcript + LLM API keys to the server.',
+      'Send the full transcript to your model for concise bullet points.'
+    ]
+  }
+];
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -19,23 +35,12 @@ form.addEventListener('submit', async (event) => {
   }
 
   toggleForm(true);
-  showStatus('Processing your link…');
+  showStatus('Processing your link with built-in demo data…');
 
   try {
-    const response = await fetch('/api/process', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url })
-    });
-
-    if (!response.ok) {
-      const { error } = await response.json();
-      throw new Error(error || 'Unable to process link.');
-    }
-
-    const data = await response.json();
+    const data = await getDemoSummary(url);
     renderResults(data);
-    showStatus('Finished! Replace the stub API with your own to see real data.');
+    showStatus('Finished! Replace the stub logic in app.js with your API to see real data.');
   } catch (error) {
     console.error(error);
     showStatus(error.message || 'Something went wrong.');
@@ -89,25 +94,14 @@ if (transcriptForm) {
     }
 
     toggleTranscriptForm(true);
-    showStatus('Fetching transcript…');
+    showStatus('Fetching transcript sample…');
 
     try {
-      const response = await fetch('/api/transcript', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId })
-      });
-
-      if (!response.ok) {
-        const { error } = await response.json();
-        throw new Error(error || 'Unable to fetch transcript.');
-      }
-
-      const data = await response.json();
+      const data = await getDemoTranscript(videoId);
       transcriptEl.textContent = data.transcript;
       transcriptResult.hidden = false;
       transcriptSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      showStatus('Transcript fetched successfully.');
+      showStatus('Transcript fetched successfully from demo data.');
     } catch (error) {
       console.error(error);
       showStatus(error.message || 'Something went wrong while fetching the transcript.');
@@ -122,4 +116,38 @@ if (transcriptForm) {
 function toggleTranscriptForm(disabled) {
   const button = transcriptForm.querySelector('button');
   button.disabled = disabled;
+}
+
+function extractYouTubeId(url) {
+  const match = /(?:v=|\.be\/|embed\/)([\w-]{11})/.exec(url);
+  return match ? match[1] : null;
+}
+
+function getDemoSummary(url) {
+  const videoId = extractYouTubeId(url);
+  const derivedTitle = videoId
+    ? `Placeholder title for video ${videoId}`
+    : 'Placeholder YouTube Video Title';
+  const mockTranscriptSnippet = 'This is a placeholder transcript. Connect the transcript API to replace it.';
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        title: derivedTitle,
+        answer: `Quick take: ${mockTranscriptSnippet}`,
+        highlights: demoHighlights
+      });
+    }, 400);
+  });
+}
+
+function getDemoTranscript(videoId) {
+  const text =
+    'This is a placeholder transcript for the provided YouTube video ID. Swap this helper for a real transcript API call.';
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ transcript: `${text} (ID: ${videoId})` });
+    }, 400);
+  });
 }
