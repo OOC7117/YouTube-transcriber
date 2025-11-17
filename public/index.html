@@ -41,6 +41,22 @@
       </div>
     </section>
 
+    <section class="card" id="transcript-section">
+      <form id="transcript-form">
+        <label for="videoId">YouTube video ID</label>
+        <div class="input-row">
+          <input id="videoId" name="videoId" type="text" placeholder="e.g. dQw4w9WgXcQ" required>
+          <button type="submit">Extract transcript</button>
+        </div>
+        <p class="hint">Paste the 11-character YouTube video ID to fetch the transcript.</p>
+      </form>
+
+      <div class="result-block" id="transcript-result" hidden>
+        <h2>Transcript</h2>
+        <p id="transcript" class="result-text"></p>
+      </div>
+    </section>
+
     <section class="card" id="status"></section>
   </div>
 
